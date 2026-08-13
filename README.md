@@ -134,8 +134,6 @@ No IntelliJ, adicione as mesmas variáveis em:
 Run → Edit Configurations → Environment variables
 ```
 
-Nunca envie chaves ou senhas para o GitHub.
-
 ## Executando a aplicação
 
 No Windows:
