@@ -1,0 +1,10 @@
+.gradle
+.gradle-user
+build
+.git
+.gitignore
+.idea
+*.iml
+.env
+.env.*
+*.log

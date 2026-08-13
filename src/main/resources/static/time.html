@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Partidas e desempenho de um clube no Campeonato Brasileiro">
+    <title>Time — Brasileirão</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="pagina-time">
+<header class="cabecalho">
+    <a class="marca" href="/" aria-label="Voltar para a página inicial do Brasileirão">
+        <span class="marca-simbolo">BR</span>
+        <span>
+            <strong>Brasileirão</strong>
+            <small>Central de partidas</small>
+        </span>
+    </a>
+
+    <div class="seletor-container">
+        <label for="temporada-time">Temporada</label>
+        <select id="temporada-time" disabled>
+            <option>Carregando...</option>
+        </select>
+    </div>
+</header>
+
+<main>
+    <a id="voltar-classificacao" class="voltar-link" href="/">← Voltar para a classificação</a>
+
+    <section class="time-hero">
+        <div id="time-escudo" class="time-escudo-grande" aria-hidden="true"></div>
+        <div>
+            <p class="chapeu">Perfil do clube</p>
+            <h1 id="time-nome">Carregando...</h1>
+            <p id="time-descricao" class="introducao">Buscando os jogos da temporada.</p>
+        </div>
+    </section>
+
+    <p id="aviso-time" class="aviso" role="status" aria-live="polite">
+        Carregando dados do time...
+    </p>
+
+    <section id="conteudo-time" hidden>
+        <div class="estatisticas-time" aria-label="Desempenho do time na temporada">
+            <div><span id="time-posicao">—</span><small>posição</small></div>
+            <div><span id="time-pontos">—</span><small>pontos</small></div>
+            <div><span id="time-jogos">—</span><small>jogos</small></div>
+            <div><span id="time-vitorias">—</span><small>vitórias</small></div>
+            <div><span id="time-empates">—</span><small>empates</small></div>
+            <div><span id="time-derrotas">—</span><small>derrotas</small></div>
+            <div><span id="time-saldo">—</span><small>saldo</small></div>
+        </div>
+
+        <section class="jogos-time" aria-labelledby="titulo-jogos-time">
+            <div class="secao-titulo">
+                <div>
+                    <p class="chapeu">Calendário do clube</p>
+                    <h2 id="titulo-jogos-time">Jogos da temporada</h2>
+                </div>
+                <span id="quantidade-jogos-time" class="contador-jogos"></span>
+            </div>
+            <div id="lista-jogos-time" class="lista-rodadas"></div>
+        </section>
+    </section>
+</main>
+
+<footer>
+    Dados carregados pelo backend Spring Boot a partir do PostgreSQL.
+</footer>
+
+<script src="/time.js" defer></script>
+</body>
+</html>

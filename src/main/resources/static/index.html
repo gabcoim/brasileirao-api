@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Partidas do Campeonato Brasileiro por temporada e rodada">
+    <title>Brasileirão — Partidas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="cabecalho">
+    <a class="marca" href="/" aria-label="Página inicial do Brasileirão">
+        <span class="marca-simbolo">BR</span>
+        <span>
+            <strong>Brasileirão</strong>
+            <small>Central de partidas</small>
+        </span>
+    </a>
+
+    <div class="seletor-container">
+        <label for="temporada">Temporada</label>
+        <select id="temporada" disabled aria-describedby="aviso-status">
+            <option>Carregando...</option>
+        </select>
+    </div>
+</header>
+
+<main>
+    <section class="apresentacao">
+        <div>
+            <p class="chapeu">Campeonato Brasileiro Série A</p>
+            <h1>Jogos, rodadas<br>e resultados.</h1>
+            <p class="introducao">
+                Consulte as partidas já importadas para o seu banco de dados.
+            </p>
+        </div>
+
+        <div class="resumo" aria-label="Resumo da temporada">
+            <div>
+                <span id="total-partidas">—</span>
+                <small>partidas</small>
+            </div>
+            <div>
+                <span id="total-times">—</span>
+                <small>times</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="classificacao-secao" aria-labelledby="titulo-classificacao">
+        <div class="secao-titulo">
+            <div>
+                <p class="chapeu">Tabela</p>
+                <h2 id="titulo-classificacao">Classificação final</h2>
+            </div>
+            <div class="legenda-classificacao" aria-label="Legenda da classificação">
+                <span><i class="legenda-cor campeao"></i> Campeão</span>
+                <span><i class="legenda-cor libertadores"></i> Libertadores</span>
+                <span><i class="legenda-cor rebaixamento"></i> Rebaixamento</span>
+            </div>
+        </div>
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col" class="posicao-coluna">#</th>
+                    <th scope="col" class="clube-coluna">Clube</th>
+                    <th scope="col">PTS</th>
+                    <th scope="col">J</th>
+                    <th scope="col">V</th>
+                    <th scope="col">E</th>
+                    <th scope="col">D</th>
+                    <th scope="col">GP</th>
+                    <th scope="col">GC</th>
+                    <th scope="col">SG</th>
+                </tr>
+                </thead>
+                <tbody id="corpo-classificacao"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="conteudo" aria-labelledby="titulo-partidas">
+        <div class="secao-titulo">
+            <div>
+                <p class="chapeu">Calendário</p>
+                <h2 id="titulo-partidas">Partidas por rodada</h2>
+            </div>
+            <button id="recarregar" type="button" class="botao-secundario">
+                Atualizar dados
+            </button>
+        </div>
+
+        <nav id="navegacao-rodadas" class="navegacao-rodadas" aria-label="Navegação entre rodadas" hidden>
+            <button id="rodada-anterior" type="button" aria-label="Mostrar rodada anterior">
+                <span aria-hidden="true">←</span> Anterior
+            </button>
+            <label class="seletor-rodada-container" for="seletor-rodada">
+                <span>Rodada</span>
+                <select id="seletor-rodada" aria-label="Selecionar rodada"></select>
+            </label>
+            <button id="proxima-rodada" type="button" aria-label="Mostrar próxima rodada">
+                Próxima <span aria-hidden="true">→</span>
+            </button>
+        </nav>
+
+        <p id="aviso-status" class="aviso" role="status" aria-live="polite">
+            Buscando temporadas disponíveis...
+        </p>
+
+        <div id="lista-rodadas" class="lista-rodadas"></div>
+    </section>
+</main>
+
+<footer>
+    Dados carregados pelo backend Spring Boot a partir do PostgreSQL.
+</footer>
+
+<script src="/app.js" defer></script>
+</body>
+</html>

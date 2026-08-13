@@ -1,0 +1,11 @@
+package com.meuprojeto.brasileirao.dto.apifootball;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record ApiFixtureStatus(
+        @JsonProperty("long") String longStatus,
+        @JsonProperty("short") String shortStatus
+) {
+}
