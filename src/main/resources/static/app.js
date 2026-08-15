@@ -8,6 +8,7 @@ const listaRodadas = document.querySelector("#lista-rodadas");
 const botaoRecarregar = document.querySelector("#recarregar");
 const totalPartidas = document.querySelector("#total-partidas");
 const totalTimes = document.querySelector("#total-times");
+const tituloClassificacao = document.querySelector("#titulo-classificacao");
 const corpoClassificacao = document.querySelector("#corpo-classificacao");
 const navegacaoRodadas = document.querySelector("#navegacao-rodadas");
 const botaoRodadaAnterior = document.querySelector("#rodada-anterior");
@@ -17,6 +18,10 @@ const seletorRodada = document.querySelector("#seletor-rodada");
 let partidasCarregadas = [];
 let rodadasDisponiveis = [];
 let indiceRodadaAtual = 0;
+let identificadorCarregamento = 0;
+
+// A Promise também fica no cache para impedir duas requisições iguais ao mesmo tempo.
+const partidasPorTemporada = new Map();
 
 const nomesStatus = {
     AGENDADA: "Agendada",
@@ -36,6 +41,39 @@ async function buscarJson(url) {
     }
 
     return resposta.json();
+}
+
+function buscarPartidasDaTemporada(temporada, forcarAtualizacao = false) {
+    const chave = String(temporada);
+
+    if (forcarAtualizacao) {
+        partidasPorTemporada.delete(chave);
+    }
+
+    if (!partidasPorTemporada.has(chave)) {
+        const carregamento = buscarJson(
+            `/partidas?ligaId=${LIGA_ID}&temporada=${encodeURIComponent(chave)}`
+        ).catch(erro => {
+            // Uma falha não deve ficar guardada: a próxima tentativa poderá buscar novamente.
+            partidasPorTemporada.delete(chave);
+            throw erro;
+        });
+
+        partidasPorTemporada.set(chave, carregamento);
+    }
+
+    return partidasPorTemporada.get(chave);
+}
+
+function preCarregarTemporadas(temporadas, temporadaAtual) {
+    temporadas
+        .filter(temporada => String(temporada) !== String(temporadaAtual))
+        .forEach(temporada => {
+            buscarPartidasDaTemporada(temporada).catch(erro => {
+                // O pré-carregamento é opcional e não deve exibir erro para o usuário.
+                console.warn(`Não foi possível pré-carregar ${temporada}.`, erro);
+            });
+        });
 }
 
 async function carregarTemporadas() {
@@ -65,6 +103,7 @@ async function carregarTemporadas() {
 
         seletorTemporada.disabled = false;
         await carregarPartidas();
+        preCarregarTemporadas(temporadas, seletorTemporada.value);
     } catch (erro) {
         definirAviso(
             "Não foi possível carregar as temporadas. Confira se o Spring Boot está em execução.",
@@ -74,16 +113,24 @@ async function carregarTemporadas() {
     }
 }
 
-async function carregarPartidas() {
+async function carregarPartidas(forcarAtualizacao = false) {
     const temporada = seletorTemporada.value;
+    const carregamentoAtual = ++identificadorCarregamento;
+    tituloClassificacao.textContent = `Classificação final - Temporada ${temporada}`;
     definirAviso(`Carregando partidas de ${temporada}...`);
     listaRodadas.innerHTML = "";
     navegacaoRodadas.hidden = true;
 
     try {
-        const partidas = await buscarJson(
-            `/partidas?ligaId=${LIGA_ID}&temporada=${encodeURIComponent(temporada)}`
+        const partidas = await buscarPartidasDaTemporada(
+            temporada,
+            forcarAtualizacao
         );
+
+        // Se o usuário já escolheu outra temporada, esta resposta antiga é ignorada.
+        if (carregamentoAtual !== identificadorCarregamento) {
+            return;
+        }
 
         atualizarResumo(partidas);
         exibirClassificacao(partidas);
@@ -96,6 +143,10 @@ async function carregarPartidas() {
         definirAviso("");
         prepararNavegacaoRodadas(partidas);
     } catch (erro) {
+        if (carregamentoAtual !== identificadorCarregamento) {
+            return;
+        }
+
         definirAviso("Não foi possível carregar as partidas desta temporada.", true);
         console.error(erro);
     }
@@ -414,7 +465,7 @@ seletorTemporada.addEventListener("change", () => {
     window.history.replaceState(null, "", `/?temporada=${temporada}`);
     carregarPartidas();
 });
-botaoRecarregar.addEventListener("click", carregarPartidas);
+botaoRecarregar.addEventListener("click", () => carregarPartidas(true));
 seletorRodada.addEventListener("change", () => {
     const rodadaSelecionada = Number(seletorRodada.value);
     const novoIndice = rodadasDisponiveis.indexOf(rodadaSelecionada);
