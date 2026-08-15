@@ -98,6 +98,47 @@ O endpoint `/actuator/health` é usado pelo Render para verificar se a aplicaç�
 iniciou corretamente. No plano gratuito, o primeiro acesso depois de um período
 sem visitantes pode levar cerca de um minuto.
 
+## Publicação com dados reais
+
+O `render.yaml` está configurado para o perfil `prod`. Nesse perfil, a aplicação
+usa um PostgreSQL hospedado e mantém a importação administrativa ativa. Cadastre
+as variáveis abaixo no serviço do Render:
+
+| Variável | Conteúdo |
+|---|---|
+| `SPRING_DATASOURCE_URL` | URL JDBC do PostgreSQL, começando com `jdbc:postgresql://` |
+| `SPRING_DATASOURCE_USERNAME` | Usuário do PostgreSQL hospedado |
+| `SPRING_DATASOURCE_PASSWORD` | Senha do PostgreSQL hospedado |
+| `API_FOOTBALL_KEY` | Chave da API-Football |
+| `ADMIN_USERNAME` | Usuário administrativo, por padrão `admin` |
+| `ADMIN_PASSWORD` | Senha forte para o endpoint de importação |
+
+Exemplo do formato da URL JDBC para um banco Neon:
+
+```text
+jdbc:postgresql://HOST/neondb?sslmode=require
+```
+
+O Neon apresenta uma conexão semelhante a
+`postgresql://USUARIO:SENHA@HOST/neondb`. Para a aplicação Java, separe o
+usuário e a senha nas variáveis correspondentes e transforme o início da URL em
+`jdbc:postgresql://`.
+
+Depois que o deploy estiver saudável, faça a primeira importação usando HTTPS:
+
+```powershell
+$credencial = Get-Credential
+
+Invoke-RestMethod `
+  -Method Post `
+  -Credential $credencial `
+  -Uri "https://SEU-SERVICO.onrender.com/importacoes/partidas?ligaId=71&temporada=2024"
+```
+
+Repita somente para as temporadas que deseja disponibilizar. Os visitantes
+podem consultar os endpoints `GET`, mas apenas o administrador pode importar ou
+atualizar partidas.
+
 ## Pré-requisitos
 
 Os pré-requisitos abaixo são necessários apenas para o modo normal, que importa
