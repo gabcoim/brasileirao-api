@@ -154,19 +154,16 @@ h1 {
 }
 
 .apresentacao-logo {
-    display: grid;
+    display: block;
     width: 132px;
-    height: 132px;
+    height: auto;
     flex: 0 0 132px;
-    place-items: center;
-    color: var(--verde-escuro);
-    background: var(--amarelo);
-    border: 6px solid white;
-    border-radius: 32px;
+    padding: 8px;
+    object-fit: contain;
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 24px;
     box-shadow: 0 14px 32px rgba(15, 61, 43, .16);
-    font-size: 38px;
-    font-weight: 800;
-    letter-spacing: -.04em;
 }
 
 .introducao {
@@ -714,10 +711,8 @@ footer {
 
     .apresentacao-logo {
         width: 104px;
-        height: 104px;
         flex-basis: 104px;
-        border-radius: 25px;
-        font-size: 30px;
+        border-radius: 20px;
     }
 
     .secao-titulo {
@@ -822,11 +817,9 @@ footer {
 
     .apresentacao-logo {
         width: 72px;
-        height: 72px;
         flex-basis: 72px;
-        border-width: 4px;
-        border-radius: 19px;
-        font-size: 23px;
+        padding: 5px;
+        border-radius: 14px;
     }
 
     .resumo div {
