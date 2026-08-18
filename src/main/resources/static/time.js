@@ -12,6 +12,9 @@ const timeDescricao = document.querySelector("#time-descricao");
 const timeEscudo = document.querySelector("#time-escudo");
 const listaJogos = document.querySelector("#lista-jogos-time");
 const quantidadeJogos = document.querySelector("#quantidade-jogos-time");
+const seletorRodadaTime =
+    document.querySelector("#seletor-rodada-time");
+let jogosDoTimeCarregados = [];
 
 const camposEstatisticas = {
     posicao: document.querySelector("#time-posicao"),
@@ -80,6 +83,7 @@ async function carregarTime() {
     aviso.textContent = `Carregando a temporada ${temporada}...`;
     aviso.classList.remove("erro");
     conteudo.hidden = true;
+    seletorRodadaTime.disabled = true;
     voltarClassificacao.href = `/?temporada=${temporada}`;
 
     try {
@@ -94,6 +98,8 @@ async function carregarTime() {
         }
 
         const time = obterTime(jogosDoTime[0], timeId);
+        jogosDoTimeCarregados = jogosDoTime;
+        prepararSeletorRodadas(jogosDoTime);
         preencherCabecalho(time, temporada);
         preencherEstatisticas(time, partidas, jogosDoTime);
         exibirJogos(jogosDoTime);
@@ -105,6 +111,26 @@ async function carregarTime() {
         mostrarErro("Não foi possível carregar os jogos deste time.");
         console.error(erro);
     }
+}
+
+function prepararSeletorRodadas(jogos) {
+    const rodadas = [...new Set(
+        jogos
+            .map(jogo => jogo.rodada)
+            .filter(Number.isInteger)
+    )].sort((a, b) => a - b);
+
+    seletorRodadaTime.innerHTML = '<option value="todas">Todas</option>';
+
+    rodadas.forEach(rodada => {
+        const opcao = document.createElement("option");
+        opcao.value = rodada;
+        opcao.textContent = rodada;
+        seletorRodadaTime.appendChild(opcao);
+    });
+
+    seletorRodadaTime.value = "todas";
+    seletorRodadaTime.disabled = false;
 }
 
 function preencherCabecalho(time, temporada) {
@@ -318,6 +344,20 @@ seletorTemporada.addEventListener("change", () => {
     const temporada = seletorTemporada.value;
     window.history.replaceState(null, "", `/time.html?timeId=${timeId}&temporada=${temporada}`);
     carregarTime();
+});
+
+seletorRodadaTime.addEventListener("change", () => {
+    const rodadaSelecionada = seletorRodadaTime.value;
+    const jogosFiltrados = rodadaSelecionada === "todas"
+        ? jogosDoTimeCarregados
+        : jogosDoTimeCarregados.filter(
+            jogo => jogo.rodada === Number(rodadaSelecionada)
+        );
+
+    exibirJogos(jogosFiltrados);
+    quantidadeJogos.textContent = jogosFiltrados.length === 1
+        ? "1 jogo encontrado"
+        : `${jogosFiltrados.length} jogos encontrados`;
 });
 
 iniciar();
