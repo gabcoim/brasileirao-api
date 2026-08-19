@@ -465,7 +465,6 @@ seletorTemporada.addEventListener("change", () => {
     window.history.replaceState(null, "", `/?temporada=${temporada}`);
     carregarPartidas();
 });
-botaoRecarregar.addEventListener("click", () => carregarPartidas(true));
 seletorRodada.addEventListener("change", () => {
     const rodadaSelecionada = Number(seletorRodada.value);
     const novoIndice = rodadasDisponiveis.indexOf(rodadaSelecionada);
