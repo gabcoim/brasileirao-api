@@ -37,7 +37,7 @@ API externa, persistência de dados e construção de uma API REST com Spring Bo
 
 O backend está dividido em camadas:
 
-```text
+``text
 Controller
     ↓ recebe a requisição HTTP
 Service
@@ -45,7 +45,7 @@ Service
 Repository
     ↓ consulta ou altera os dados
 PostgreSQL
-```
+``
 
 Para a importação, o fluxo também utiliza um client externo:
 
@@ -57,8 +57,8 @@ ImportacaoController
         → PartidaPersistenciaService
             → Repositories
                 → PostgreSQL
-```
-```
+``
+``
 
 ## Melhorias planejadas
 
