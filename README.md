@@ -33,32 +33,6 @@ API externa, persistência de dados e construção de uma API REST com Spring Bo
 - HTML, CSS e JavaScript
 - API-Football
 
-## Arquitetura
-
-O backend está dividido em camadas:
-
-``text
-Controller
-    ↓ recebe a requisição HTTP
-Service
-    ↓ aplica as regras da aplicação
-Repository
-    ↓ consulta ou altera os dados
-PostgreSQL
-``
-
-Para a importação, o fluxo também utiliza um client externo:
-
-``text
-ImportacaoController
-    → PartidaImportacaoService
-        → ApiFootballClient
-            → API-Football
-        → PartidaPersistenciaService
-            → Repositories
-                → PostgreSQL
-``
-
 ## Melhorias planejadas
 
 - Tratamento global de erros.
