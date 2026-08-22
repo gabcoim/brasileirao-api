@@ -49,7 +49,7 @@ PostgreSQL
 
 Para a importação, o fluxo também utiliza um client externo:
 
-```text
+``text
 ImportacaoController
     → PartidaImportacaoService
         → ApiFootballClient
