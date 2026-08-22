@@ -7,6 +7,12 @@ clubes.
 O projeto foi desenvolvido para praticar arquitetura em camadas, integração com
 API externa, persistência de dados e construção de uma API REST com Spring Boot.
 
+## Demonstração
+
+Acesse o projeto publicado:
+
+https://brasileirao-api-9vez.onrender.com
+
 ## Funcionalidades
 
 - Importação de partidas da API-Football.
