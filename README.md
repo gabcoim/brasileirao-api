@@ -29,7 +29,7 @@ https://brasileirao-api-9vez.onrender.com
 ## Tecnologias
 
 - Java 21
-- Spring Boot 4
+- Spring Boot 
 - Spring Web MVC
 - Spring Data JPA
 - Hibernate
